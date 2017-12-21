@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nguyen.cuong.hellofoods.activities.LoginActivity">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            app:theme="@style/ToolbarStyle"/>
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:background="@drawable/login_background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_login"
+            android:drawableLeft="@drawable/ic_email"
+            android:drawablePadding="5dp"
+            android:drawableTint="#FFF"
+            android:padding="5dp"
+            android:textColor="@color/login_text"
+            android:hint="Email"
+            android:textColorHint="@color/login_hint_text"/>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_login"
+            android:drawableLeft="@drawable/ic_password"
+            android:drawablePadding="5dp"
+            android:drawableTint="#FFF"
+            android:inputType="textPassword"
+            android:padding="5dp"
+            android:textColor="@color/login_text"
+            android:hint="Mật khẩu"
+            android:textColorHint="@color/login_hint_text"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_login"
+            android:drawableLeft="@drawable/ic_user_login"
+            android:drawablePadding="5dp"
+            android:drawableTint="#FFF"
+            android:inputType="textPassword"
+            android:padding="5dp"
+            android:textColor="@color/login_text"
+            android:hint="Họ tên"
+            android:textColorHint="@color/login_hint_text"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_login"
+            android:drawableLeft="@drawable/ic_phone"
+            android:drawablePadding="5dp"
+            android:drawableTint="#FFF"
+            android:inputType="textPassword"
+            android:padding="5dp"
+            android:textColor="@color/login_text"
+            android:hint="Điện thoại"
+            android:textColorHint="@color/login_hint_text"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_login"
+            android:drawableLeft="@drawable/ic_location"
+            android:drawablePadding="5dp"
+            android:drawableTint="#FFF"
+            android:inputType="textPassword"
+            android:padding="5dp"
+            android:textColor="@color/login_text"
+            android:hint="Địa chỉ"
+            android:textColorHint="@color/login_hint_text"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_register"
+            android:text="Đăng ký"
+            android:padding="10dp"
+            android:textAllCaps="false"
+            android:layout_margin="10dp"
+            android:textColor="@color/login_button_register_text"
+            android:id="@+id/register"/>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

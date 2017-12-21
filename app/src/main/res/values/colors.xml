@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00BFFF</color>
+    <color name="colorPrimaryDark">#1E90FF</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="menu_info_color">#e2dddd</color>
+    <color name="menu_text_normal">#be6a46</color>
+    <color name="menu_text_select">#FFF</color>
+    <color name="login_text">#FFF</color>
+    <color name="login_hint_text">#bcbcbc</color>
+    <color name="login_button_login_text">#696969</color>
+    <color name="login_button_register_text">#FFF</color>
+    <color name="login_button_facebook_text">#FFF</color>
+</resources>
