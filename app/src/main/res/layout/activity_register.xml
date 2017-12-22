@@ -50,6 +50,20 @@
             android:textColor="@color/login_text"
             android:hint="Mật khẩu"
             android:textColorHint="@color/login_hint_text"/>
+        <EditText
+            android:id="@+id/repeat_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_login"
+            android:drawableLeft="@drawable/ic_password"
+            android:drawablePadding="5dp"
+            android:drawableTint="#FFF"
+            android:inputType="textPassword"
+            android:padding="5dp"
+            android:textColor="@color/login_text"
+            android:hint="Nhập lại mật khẩu"
+            android:textColorHint="@color/login_hint_text"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -59,11 +73,11 @@
             android:drawableLeft="@drawable/ic_user_login"
             android:drawablePadding="5dp"
             android:drawableTint="#FFF"
-            android:inputType="textPassword"
             android:padding="5dp"
             android:textColor="@color/login_text"
             android:hint="Họ tên"
-            android:textColorHint="@color/login_hint_text"/>
+            android:textColorHint="@color/login_hint_text"
+            android:id="@+id/name"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -73,25 +87,13 @@
             android:drawableLeft="@drawable/ic_phone"
             android:drawablePadding="5dp"
             android:drawableTint="#FFF"
-            android:inputType="textPassword"
+            android:inputType="numberDecimal"
             android:padding="5dp"
             android:textColor="@color/login_text"
             android:hint="Điện thoại"
-            android:textColorHint="@color/login_hint_text"/>
+            android:textColorHint="@color/login_hint_text"
+            android:id="@+id/phone"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/edittext_login"
-            android:drawableLeft="@drawable/ic_location"
-            android:drawablePadding="5dp"
-            android:drawableTint="#FFF"
-            android:inputType="textPassword"
-            android:padding="5dp"
-            android:textColor="@color/login_text"
-            android:hint="Địa chỉ"
-            android:textColorHint="@color/login_hint_text"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

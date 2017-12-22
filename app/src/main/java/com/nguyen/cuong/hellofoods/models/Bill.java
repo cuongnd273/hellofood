@@ -1,12 +1,24 @@
 package com.nguyen.cuong.hellofoods.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by cuong on 11/30/2017.
  */
 
 public class Bill {
+    @SerializedName("ID_DonHang")
+    @Expose
+    private int id;
+    @SerializedName("ThoiGian")
+    @Expose
     private String time;
+    @SerializedName("TrangThai")
+    @Expose
     private int status;
+    @SerializedName("TongTien")
+    @Expose
     private int totalMoney;
 
     public Bill(String time, int status, int totalMoney) {
@@ -17,6 +29,14 @@ public class Bill {
 
     public String getTime() {
         return time;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setTime(String time) {

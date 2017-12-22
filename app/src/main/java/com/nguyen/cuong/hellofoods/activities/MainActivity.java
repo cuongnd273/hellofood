@@ -17,21 +17,18 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nguyen.cuong.hellofoods.R;
 import com.nguyen.cuong.hellofoods.adapters.NavMenuAdapter;
 import com.nguyen.cuong.hellofoods.databases.CartDao;
-import com.nguyen.cuong.hellofoods.databases.HelloFoodsDatabase;
 import com.nguyen.cuong.hellofoods.fragments.CartFragment;
 import com.nguyen.cuong.hellofoods.fragments.FullMenuFragment;
 import com.nguyen.cuong.hellofoods.fragments.HistoryFragment;
-import com.nguyen.cuong.hellofoods.models.Account;
 import com.nguyen.cuong.hellofoods.models.NavMenu;
+import com.nguyen.cuong.hellofoods.models.User;
 import com.nguyen.cuong.hellofoods.utils.AccountInfo;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -48,15 +45,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ArrayList<NavMenu> navMenus;
     private NavMenuAdapter adapter;
     private AccountInfo accountInfo;
-    private Account account;
     BottomNavigationView bottomNavigationView;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getControls();
-        CartDao dao=new CartDao(this);
+        CartDao dao = new CartDao(this);
         dao.open();
     }
 
@@ -69,9 +66,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         listMenu = (ListView) findViewById(R.id.nav_list);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_menu);
-        avatar= (CircleImageView) findViewById(R.id.avatar);
-        name= (TextView) findViewById(R.id.name);
-        accountInfo=new AccountInfo(this);
+        avatar = (CircleImageView) findViewById(R.id.avatar);
+        name = (TextView) findViewById(R.id.name);
+        accountInfo = new AccountInfo(this);
         setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_menu, R.string.close_menu);
         drawerLayout.addDrawerListener(toggle);
@@ -99,17 +96,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         navMenus.add(new NavMenu(R.drawable.ic_history, "Lịch sử đặt hàng"));
         navMenus.add(new NavMenu(R.drawable.ic_user, "Tài khoản"));
         navMenus.add(new NavMenu(R.drawable.ic_setting, "Cài đặt"));
-        navMenus.add(new NavMenu(R.drawable.ic_logout, "Đăng xuất",false,false));
+        navMenus.add(new NavMenu(R.drawable.ic_logout, "Đăng xuất", false, false));
         adapter = new NavMenuAdapter(navMenus, this);
         listMenu.setAdapter(adapter);
-        account=accountInfo.getAccount();
-        Picasso.with(this).load(account.getAvatar()).into(avatar);
-        name.setText(account.getName());
+        user = accountInfo.getAccount();
+//        Picasso.with(this).load(account.getAvatar()).into(avatar);
+        name.setText(user.getTenTaiKhoan());
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(navMenus.get(position).isOpenUI()){
+        updateMenu(position);
+        drawerLayout.closeDrawer(Gravity.START);
+        selectMenu(position);
+    }
+    void updateMenu(int position){
+        if (navMenus.get(position).isOpenUI()) {
             for (int i = 0; i < navMenus.size(); i++) {
                 NavMenu nav = navMenus.get(i);
                 if (i == position)
@@ -120,10 +122,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
             adapter.notifyDataSetChanged();
         }
-        drawerLayout.closeDrawer(Gravity.START);
-        selectMenu(position);
     }
-
     private void selectMenu(int positon) {
         Fragment fragment = null;
         FragmentTransaction fragmentTransaction;
@@ -167,12 +166,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (item.getItemId()) {
             case R.id.bottom_home:
                 fragment = new FullMenuFragment();
+                updateMenu(0);
                 break;
             case R.id.bottom_cart:
                 fragment = new CartFragment();
+                updateMenu(1);
                 break;
             case R.id.bottom_history:
                 fragment = new HistoryFragment();
+                updateMenu(2);
                 break;
         }
         if (fragment != null) {
@@ -181,14 +183,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         return true;
     }
-    void logOut(){
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+
+    void logOut() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Bạn có muốn đăng xuất không ?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 accountInfo.deleteAccount();
-                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -199,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 dialog.cancel();
             }
         });
-        AlertDialog dialog=builder.create();
+        AlertDialog dialog = builder.create();
         dialog.show();
     }
 }

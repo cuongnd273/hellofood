@@ -47,6 +47,12 @@ public class CartDao {
         }
         return carts;
     }
+    public void edit(Cart cart){
+        open();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(COUNT,cart.getCount());
+        this.db.update(TABLE,contentValues,ID+"=?",new String[]{String.valueOf(cart.getId())});
+    }
     public long addCart(Cart cart){
         open();
         Cursor cursor=this.db.query(TABLE,null,ID+"=?",new String[]{String.valueOf(cart.getId())},null,null,null);

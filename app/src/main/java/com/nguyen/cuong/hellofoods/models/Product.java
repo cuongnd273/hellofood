@@ -1,5 +1,8 @@
 package com.nguyen.cuong.hellofoods.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,12 +10,33 @@ import java.io.Serializable;
  */
 
 public class Product implements Serializable{
+    @SerializedName("ID_MonAn")
+    @Expose
     private int id;
+    @SerializedName("TenMonAn")
+    @Expose
     private String name;
+    @SerializedName("SrcImg")
+    @Expose
     private String image;
+    @SerializedName("MoTa")
+    @Expose
     private String description;
+    @SerializedName("GiaBan")
+    @Expose
     private int price;
+    @SerializedName("GiaKhuyenMai")
+    @Expose
     private int sale;
+
+    public Product(int id, String name, String image, String description, int price, int sale) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.description = description;
+        this.price = price;
+        this.sale = sale;
+    }
 
     public Product(String name, String image, String description, int price, int sale) {
         this.name = name;

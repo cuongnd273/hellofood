@@ -69,15 +69,5 @@
                 android:textColor="@color/login_button_register_text"
                 android:id="@+id/register"/>
         </LinearLayout>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:textAllCaps="false"
-            android:text="Đăng nhập với Facebook"
-            android:textColor="@color/login_button_facebook_text"
-            android:background="@drawable/button_login_facebook"
-            android:drawableLeft="@drawable/icon_facebook"
-            android:id="@+id/loginFacebook"/>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -57,7 +57,13 @@ public class BillAdapter extends BaseAdapter {
         viewHolder.time.setText(bills.get(position).getTime());
         DecimalFormat formatter = new DecimalFormat("#,###,###");
         viewHolder.totalMoney.setText(formatter.format(bills.get(position).getTotalMoney()) + " đ");
-        viewHolder.status.setText("Đã thanh toán");
+        if (bills.get(position).getStatus() == 1) {
+            viewHolder.status.setText("Chưa thanh toán");
+        } else if (bills.get(position).getStatus() == 0) {
+            viewHolder.status.setText("Đã thanh toán");
+        } else if (bills.get(position).getStatus() == 2) {
+            viewHolder.status.setText("Hủy bỏ");
+        }
         return view;
     }
 

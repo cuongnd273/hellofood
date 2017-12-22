@@ -1,6 +1,7 @@
 package com.nguyen.cuong.hellofoods.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,19 +21,26 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.makeramen.roundedimageview.RoundedImageView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.nguyen.cuong.hellofoods.R;
-import com.nguyen.cuong.hellofoods.models.Account;
+import com.nguyen.cuong.hellofoods.constants.APIConstant;
+import com.nguyen.cuong.hellofoods.interfaces.API;
+import com.nguyen.cuong.hellofoods.models.User;
 import com.nguyen.cuong.hellofoods.utils.AccountInfo;
 import com.nguyen.cuong.hellofoods.utils.ImageFilePath;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by cuong on 11/28/2017.
@@ -42,11 +50,12 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private AppBarLayout appBarLayout;
     private Toolbar toolbar;
     private Button updateInfo;
-    private EditText name, phone, address, email;
+    private EditText name, phone;
     boolean statusEdit = false;
     private CircleImageView avatar;
     private AccountInfo accountInfo;
-    private Account account;
+    private User user;
+    ProgressDialog dialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +70,10 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         updateInfo = (Button) findViewById(R.id.update_info);
         name = (EditText) findViewById(R.id.name);
         phone = (EditText) findViewById(R.id.phone);
-        address = (EditText) findViewById(R.id.address);
-        email = (EditText) findViewById(R.id.email);
         avatar = (CircleImageView) findViewById(R.id.avatar);
         accountInfo=new AccountInfo(this);
+        dialog=new ProgressDialog(this);
+        dialog.setMessage("Loading...");
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,16 +81,14 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         updateInfo.setOnClickListener(this);
-        avatar.setOnClickListener(this);
+//        avatar.setOnClickListener(this);
     }
 
     void getData() {
-        account=accountInfo.getAccount();
-        name.setText(account.getName());
-        phone.setText(account.getPhone());
-        address.setText(account.getAddress());
-        email.setText(account.getEmail());
-        Picasso.with(this).load(account.getAvatar()).into(avatar);
+        user=accountInfo.getAccount();
+        name.setText(user.getTenTaiKhoan());
+        phone.setText(user.getSoDienThoai());
+//        Picasso.with(this).load(account.getAvatar()).into(avatar);
     }
 
     @Override
@@ -98,22 +105,13 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 statusEdit = true;
                 name.setEnabled(true);
                 phone.setEnabled(true);
-                address.setEnabled(true);
-                email.setEnabled(true);
                 updateInfo.setText("Lưu");
             } else {
                 statusEdit = false;
                 name.setEnabled(false);
                 phone.setEnabled(false);
-                address.setEnabled(false);
-                email.setEnabled(false);
                 updateInfo.setText("Thay đổi thông tin");
-                account.setName(name.getText().toString());
-                account.setPhone(phone.getText().toString());
-                address.setText(address.getText().toString());
-                email.setText(email.getText().toString());
-                accountInfo.setAccount(account);
-                getData();
+                update(user.getIDTaiKhoan(),name.getText().toString(),phone.getText().toString());
             }
         } else if (v.getId() == R.id.avatar) {
             checkPermission();
@@ -171,5 +169,39 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+    void update(int id,String name,String phone){
+        dialog.show();
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(APIConstant.URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        API api = retrofit.create(API.class);
+        Call<User> call=api.update(id,name,phone);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.body()!=null && response.body().getIDTaiKhoan()!=0){
+                    accountInfo.setAccount(response.body());
+                    getData();
+                    dialog.dismiss();
+                }else{
+                    dialog.dismiss();
+                    getData();
+                    Toast.makeText(AccountActivity.this, "Cập nhập thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(AccountActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

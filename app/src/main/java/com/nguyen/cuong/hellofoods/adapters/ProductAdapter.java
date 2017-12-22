@@ -59,7 +59,7 @@ public class ProductAdapter extends BaseAdapter {
             viewHolder.description = (TextView) view.findViewById(R.id.description);
             viewHolder.price_new = (TextView) view.findViewById(R.id.price_new);
             viewHolder.price_old = (TextView) view.findViewById(R.id.price_old);
-            viewHolder.add_cart= (ImageView) view.findViewById(R.id.add_cart);
+            viewHolder.add_cart = (ImageView) view.findViewById(R.id.add_cart);
             view.setTag(viewHolder);
         }
         ViewHolder viewHolder = (ViewHolder) view.getTag();
@@ -67,15 +67,8 @@ public class ProductAdapter extends BaseAdapter {
         viewHolder.name.setText(products.get(position).getName());
         viewHolder.description.setText(products.get(position).getDescription());
         DecimalFormat formatter = new DecimalFormat("#,###,###");
-        if (products.get(position).getSale() != 0) {
-            int price = products.get(position).getPrice();
-            int salse = products.get(position).getSale();
-            viewHolder.price_new.setText(formatter.format(price - (price * salse) / 100) + " đ");
-            viewHolder.price_old.setText(formatter.format(products.get(position).getPrice()) + " đ");
-        } else {
-            viewHolder.price_new.setText(formatter.format(products.get(position).getPrice()) + " đ");
-            viewHolder.price_old.setVisibility(View.INVISIBLE);
-        }
+        viewHolder.price_new.setText(formatter.format(products.get(position).getSale()) + " đ");
+        viewHolder.price_old.setText(formatter.format(products.get(position).getPrice()) + " đ");
         viewHolder.add_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

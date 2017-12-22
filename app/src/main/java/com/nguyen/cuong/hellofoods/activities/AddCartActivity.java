@@ -23,17 +23,39 @@ public class AddCartActivity extends AppCompatActivity implements View.OnClickLi
     int count;
     Button addCart;
     Product product;
+    Cart cart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cart);
+        this.setFinishOnTouchOutside(false);
         getControls();
+        Intent intent=getIntent();
+        String type=intent.getStringExtra("type");
+        if(type.equals("add")){
+            loadDataToAdd();
+        }else if(type.equals("edit")){
+            loadDataToEdit();
+        }else
+            finish();
+    }
+    void loadDataToAdd(){
         Intent intent=getIntent();
         DecimalFormat formatter = new DecimalFormat("#,###,###");
         product= (Product) intent.getSerializableExtra("product");
         Picasso.with(this).load(product.getImage()).into(image);
         name.setText(product.getName());
-        price.setText(formatter.format(product.getPrice())+" đ");
+        price.setText(formatter.format(product.getSale())+" đ");
+    }
+    void loadDataToEdit(){
+        Intent intent=getIntent();
+        DecimalFormat formatter = new DecimalFormat("#,###,###");
+        cart= (Cart) intent.getSerializableExtra("cart");
+        Picasso.with(this).load(cart.getImage()).into(image);
+        name.setText(cart.getName());
+        price.setText(formatter.format(cart.getPrice())+" đ");
+        countProduct.setText(String.valueOf(cart.getCount()));
+        addCart.setText("Cập nhập");
     }
     void getControls(){
         image= (RoundedImageView) findViewById(R.id.image);
@@ -61,16 +83,28 @@ public class AddCartActivity extends AppCompatActivity implements View.OnClickLi
                 countProduct.setText(String.valueOf(count));
             }
         }else if(v.getId()==R.id.add_cart){
-            if(Integer.valueOf(countProduct.getText().toString())>0){
-                Intent intent=new Intent();
-                Cart cart=new Cart();
-                cart.setId(product.getId());
-                cart.setName(product.getName());
-                cart.setImage(product.getImage());
-                cart.setCount(Integer.parseInt(countProduct.getText().toString()));
-                cart.setPrice(product.getPrice());
-                intent.putExtra("cart",cart);
-                setResult(RESULT_OK,intent);
+            if(product!=null){
+                if(Integer.valueOf(countProduct.getText().toString())>0){
+                    Intent intent=new Intent();
+                    Cart cart=new Cart();
+                    cart.setId(product.getId());
+                    cart.setName(product.getName());
+                    cart.setImage(product.getImage());
+                    cart.setCount(Integer.parseInt(countProduct.getText().toString()));
+                    cart.setPrice(product.getSale());
+                    intent.putExtra("cart",cart);
+                    setResult(RESULT_OK,intent);
+                }
+            }else if(cart!=null){
+                    Intent intent=new Intent();
+                    Cart c=new Cart();
+                    c.setId(cart.getId());
+                    c.setName(cart.getName());
+                    c.setImage(cart.getImage());
+                    c.setCount(Integer.parseInt(countProduct.getText().toString()));
+                    c.setPrice(cart.getPrice());
+                    intent.putExtra("cart",c);
+                    setResult(RESULT_OK,intent);
             }
             finish();
         }
